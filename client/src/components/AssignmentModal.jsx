@@ -10,7 +10,17 @@ export default function AssignmentModal({ assignment, onClose, onSaved }) {
   const [busy, setBusy] = useState(false)
 
   useEffect(() => {
-    if (assignment) setValues({ ...assignment, dueAt: localDateTime(assignment.dueAt), estimatedHours: assignment.estimatedHours ?? '' })
+    if (assignment) {
+      setValues({
+        title: assignment.title ?? '',
+        description: assignment.description ?? '',
+        course: assignment.course ?? '',
+        dueAt: localDateTime(assignment.dueAt),
+        estimatedHours: assignment.estimatedHours ?? '',
+        priority: assignment.priority ?? 'medium',
+        status: assignment.status ?? 'pending',
+      })
+    }
   }, [assignment])
 
   function change(event) { setValues((current) => ({ ...current, [event.target.name]: event.target.value })) }
@@ -19,7 +29,15 @@ export default function AssignmentModal({ assignment, onClose, onSaved }) {
     event.preventDefault()
     setBusy(true)
     setError('')
-    const body = { ...values, dueAt: new Date(values.dueAt).toISOString(), estimatedHours: values.estimatedHours === '' ? null : Number(values.estimatedHours) }
+    const body = {
+      title: values.title,
+      description: values.description,
+      course: values.course,
+      dueAt: new Date(values.dueAt).toISOString(),
+      estimatedHours: values.estimatedHours === '' ? null : Number(values.estimatedHours),
+      priority: values.priority,
+      status: values.status,
+    }
     try {
       await api(assignment ? `/assignments/${assignment._id}` : '/assignments', { method: assignment ? 'PATCH' : 'POST', body })
       await onSaved()
