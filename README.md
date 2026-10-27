@@ -2,7 +2,7 @@
 
 **Coursework, under control.** DeadlinePilot helps college students keep assignments, courses, and due dates in one private workspace, then recommends what to work on next using deadline urgency, effort remaining, and assignment priority.
 
-> **Deployment status:** prepared for Render + MongoDB Atlas, but not deployed. This workspace has no Atlas or hosting credentials. The GitHub repository, live URL, demo video, and final submission form still need the student's account actions.
+> **Deployment status:** prepared for Render + MongoDB Atlas. The Atlas URI is configured in the local, Git-ignored `server/.env`; live deployment and demo recording are still outstanding.
 
 ## Problem and users
 
@@ -98,7 +98,7 @@ Requirements: Node.js 20.19+ or 22.12+, npm, and a MongoDB Atlas database. No lo
    npm --prefix client install
    ```
 
-3. Copy `server/.env.example` to `server/.env` and set the Atlas URI and a private random JWT secret. Copy `client/.env.example` to `client/.env`; its local API URL is already suitable.
+3. Put the Atlas URI and a private random JWT secret in `server/.env`. The server reads that exact file and will not start until its required configuration is valid. Copy `client/.env.example` to `client/.env` for local development; its API URL is already suitable.
 4. Start both development servers:
 
    ```bash
@@ -107,7 +107,7 @@ Requirements: Node.js 20.19+ or 22.12+, npm, and a MongoDB Atlas database. No lo
 
 5. Open [http://localhost:5173](http://localhost:5173). The API health endpoint is [http://localhost:5000/api/health](http://localhost:5000/api/health).
 
-Or run the frontend and backend separately with `npm run dev:client` and `npm run dev:server`. If Atlas is not configured, the server still starts and `/api/health` reports `not_connected`; auth and assignment APIs return a clear 503. No mock assignment data is used.
+Or run the frontend and backend separately with `npm run dev:client` and `npm run dev:server`. The API requires a reachable Atlas database before it starts; there is no offline or mock-data mode. If Atlas disconnects after startup, health and data requests report the connection failure.
 
 ## Environment variables
 
@@ -115,13 +115,13 @@ Or run the frontend and backend separately with `npm run dev:client` and `npm ru
 
 | Variable | Required | Example / purpose |
 |---|---|---|
-| `MONGODB_URI` | Yes | `mongodb+srv://<user>:<password>@<cluster-host>/deadlinepilot?retryWrites=true&w=majority` |
-| `JWT_SECRET` | Yes | At least 32 random characters; keep private |
+| `MONGODB_URI` | Yes | Atlas connection string; use the `deadlinepilot` database path |
+| `JWT_SECRET` | Yes | At least 32 random characters; generated locally, keep private |
 | `CLIENT_URL` | Yes | Local: `http://localhost:5173`; production: exact deployed app origin |
 | `PORT` | Optional | `5000`; hosting platforms may supply this automatically |
 | `NODE_ENV` | Optional | `development` locally; `production` when deployed |
 
-Generate a secret locally with `node -e "console.log(require('node:crypto').randomBytes(48).toString('hex'))"`. Never put secrets in the client environment. `client/.env` only uses `VITE_API_BASE_URL`, which is browser-visible and should be a URL, never a secret.
+Put the Atlas connection string only in `server/.env` as `MONGODB_URI=...`. It is a MongoDB connection URI, not an API key. `JWT_SECRET` is a separate server-only session secret. No AI or other third-party API key is used. Never put secrets in the client environment. `client/.env` only uses `VITE_API_BASE_URL`, which is browser-visible and should contain the local API URL, never a secret.
 
 ## MongoDB Atlas setup
 
@@ -130,7 +130,7 @@ Generate a secret locally with `node -e "console.log(require('node:crypto').rand
 3. In **Network Access**, allow your current development IP. For Render, open the service dashboard's **Connect → Outbound** view and add its outbound IP ranges to Atlas. Render may use any IP in the listed ranges; Atlas accepts connections only from allowlisted sources. Use the smallest practical range and a database user scoped to this application. See [Render outbound IP ranges](https://render.com/docs/outbound-ip-addresses) and [Atlas network security guidance](https://www.mongodb.com/docs/atlas/architecture/current/network-security/).
 4. In **Connect → Drivers**, copy the Node.js connection string. Replace `<user>` and `<password>` with the database user's URL-encoded credentials, `<cluster-host>` with your cluster hostname, and the path database name with `deadlinepilot`.
 5. Paste the URI in `server/.env` as `MONGODB_URI=...`. Do not share it in chat or commit it.
-6. Add a long random value as `JWT_SECRET`, keep `CLIENT_URL=http://localhost:5173`, then run `npm run dev`.
+6. Keep the generated `JWT_SECRET` in `server/.env`, set `CLIENT_URL=http://localhost:5173`, then run `npm run dev`.
 7. Check `http://localhost:5000/api/health`; it should show `"database":"connected"`. Register an account, create an assignment, refresh, then sign out and back in to verify persistence.
 
 ## Tests and production build
@@ -140,7 +140,7 @@ npm test
 npm run build
 ```
 
-The tests cover ordering of overdue and future tasks, completed-task exclusion, missing/invalid dates, priority and effort, dashboard totals, validation, overdue-date acceptance, and partial updates. The Atlas-dependent persistence/ownership flow still needs to be verified after an Atlas URI is configured (see the checklist and demo script). Do not treat a successful production build as a successful database or deployment test.
+The tests cover ordering of overdue and future tasks, completed-task exclusion, missing/invalid dates, priority and effort, dashboard totals, validation, overdue-date acceptance, and partial updates. The account and persistence flows need verification against the configured Atlas service. Do not treat a successful production build as a successful database or deployment test.
 
 ## Deployment: Render + Atlas
 
@@ -164,9 +164,10 @@ Follow [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for a concise 3–5 minute pro
 
 ## Known limitations and remaining manual work
 
-- Atlas credentials, a public hosting account, GitHub remote, and video recording are not available in the workspace; no hosted DB or deployment is claimed.
-- The actual Atlas persistence, auth, and cross-account isolation flows require the student's Atlas setup and a follow-up verification.
-- A real commit history is present in this local Git repository, but it has not been pushed to a public GitHub repository.
+- Atlas connectivity is verified. Account ownership and user-data persistence still need an end-to-end check with a demo account.
+- A live deployment and demo video are not available; no public app URL or recording is claimed.
+- The actual Atlas persistence, auth, and cross-account isolation flows require a follow-up verification.
+- The GitHub repository has not yet received the local commits.
 - Completing the final submission form, checking public links privately, and uploading the demo remain student actions.
 
 See [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md) for the handoff items.

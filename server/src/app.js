@@ -11,7 +11,7 @@ import { requireDatabase } from './middleware/database.js'
 import { AppError } from './utils.js'
 
 const app = express()
-const allowedOrigin = process.env.CLIENT_URL || 'http://localhost:5173'
+const allowedOrigin = process.env.CLIENT_URL
 app.disable('x-powered-by')
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 app.use(cors({ origin: allowedOrigin, credentials: true }))

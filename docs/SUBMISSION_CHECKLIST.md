@@ -12,10 +12,10 @@
 
 ## Must be completed by the student before final submission
 
-- [ ] Create a MongoDB Atlas deployment and database user; configure network access.
-- [ ] Put the Atlas URI and a generated JWT secret in `server/.env` (never commit it).
+- [x] Put the Atlas URI in `server/.env` (never commit `.env`).
+- [x] Verify the Atlas database connection and confirm the database user/network access allow this app.
 - [ ] Verify the app against the configured Atlas database.
-- [ ] Deploy the app and replace README's deployment status/URL with the real URL.
+- [ ] Deploy the app and add the live URL to the README.
 - [ ] Record and upload a 3–5 minute demo video; update README with its link.
 - [ ] Open the repository, deployment, and demo links in a private browser window.
 - [ ] Complete the official submission form: https://forms.gle/sBy4sfqyiRG2Zpom9
