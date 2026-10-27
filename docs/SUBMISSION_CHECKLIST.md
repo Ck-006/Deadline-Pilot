@@ -8,7 +8,7 @@
 - [x] Input validation, secure password storage, protected routes, ownership checks, and actionable errors.
 - [x] Automated tests for prioritization and validation; production frontend build.
 - [x] README, environment templates, Atlas setup, deployment instructions, and a 3–5 minute demo script.
-- [ ] Meaningful Git checkpoints without secrets or generated dependencies.
+- [x] Meaningful Git checkpoints without secrets or generated dependencies.
 
 ## Must be completed by the student before final submission
 
