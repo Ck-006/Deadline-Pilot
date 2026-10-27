@@ -168,7 +168,6 @@ Follow [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for a concise 3–5 minute pro
 
 - Atlas connectivity is verified. Account ownership and user-data persistence still need an end-to-end check with a demo account.
 - A live deployment and demo video are not available; no public app URL or recording is claimed.
-- The actual Atlas persistence, auth, and cross-account isolation flows require a follow-up verification.
 - Completing the final submission form, checking public links privately, and uploading the demo remain student actions.
 
 See [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md) for the handoff items.
