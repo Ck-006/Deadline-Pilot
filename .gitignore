@@ -4,6 +4,7 @@ client/dist/
 .env.*
 *.env
 !.env.example
+END_TERM_PROJECT_GUIDELINES.md
 coverage/
 *.log
 .DS_Store

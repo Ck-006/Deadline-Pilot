@@ -2,8 +2,6 @@
 
 **Coursework, under control.** DeadlinePilot helps college students keep assignments, courses, and due dates in one private workspace, then recommends what to work on next using deadline urgency, effort remaining, and assignment priority.
 
-> **Deployment status:** prepared for Render + MongoDB Atlas. The Atlas URI is configured in the local, Git-ignored `server/.env`; live deployment and demo recording are still outstanding.
-
 **Source code:** [Ck-006/Deadline-Pilot](https://github.com/Ck-006/Deadline-Pilot)
 
 ## Problem and users
@@ -59,9 +57,6 @@ server/
   src/validators/      request schemas
   test/                prioritization and input validation tests
   .env.example
-docs/DEMO_SCRIPT.md
-docs/SUBMISSION_CHECKLIST.md
-END_TERM_PROJECT_GUIDELINES.md  (provided, unchanged)
 render.yaml
 ```
 
@@ -160,14 +155,6 @@ Start command: `npm start`
 
 The Blueprint selects Render's free web-service plan to keep the initial setup low-cost. Free web services spin down after 15 minutes without traffic and may take about a minute to wake on the next request; warm the app before a live demo or select a plan that stays running if you need consistent availability. See [Render's free service limits](https://render.com/docs/free).
 
-## Demo and submission
+## Verification status
 
-Follow [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for a concise 3–5 minute product walkthrough. A video has **not** been recorded. Upload your recording and add its accessible link here, then complete the official form: https://forms.gle/sBy4sfqyiRG2Zpom9 . The supplied deadline is **27 October 2026, 11:59 PM IST**.
-
-## Known limitations and remaining manual work
-
-- Atlas connectivity is verified. Account ownership and user-data persistence still need an end-to-end check with a demo account.
-- A live deployment and demo video are not available; no public app URL or recording is claimed.
-- Completing the final submission form, checking public links privately, and uploading the demo remain student actions.
-
-See [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md) for the handoff items.
+Automated prioritization and validation tests pass, and the production client build succeeds. Atlas connectivity is verified; account persistence and cross-account authorization still need an end-to-end check.
