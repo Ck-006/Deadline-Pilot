@@ -16,7 +16,10 @@ export default function AuthPage({ mode = 'login', onAuthenticated }) {
     setError('')
     setBusy(true)
     try {
-      const result = await api(`/auth/${register ? 'register' : 'login'}`, { method: 'POST', body: values })
+      const body = register
+        ? { name: values.name, email: values.email, password: values.password }
+        : { email: values.email, password: values.password }
+      const result = await api(`/auth/${register ? 'register' : 'login'}`, { method: 'POST', body })
       onAuthenticated(result.user)
       navigate(location.state?.from || '/', { replace: true })
     } catch (err) {

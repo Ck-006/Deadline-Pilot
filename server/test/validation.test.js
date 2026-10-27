@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createAssignmentSchema, updateAssignmentSchema, registerSchema } from '../src/validators/schemas.js'
+import { createAssignmentSchema, updateAssignmentSchema, registerSchema, loginSchema } from '../src/validators/schemas.js'
 
 test('assignment validation accepts overdue work and normalizes a blank estimate', () => {
   const parsed = createAssignmentSchema.parse({
@@ -29,4 +29,10 @@ test('registration normalizes email and enforces a longer password', () => {
   const parsed = registerSchema.parse({ name: 'Student Name', email: 'STUDENT@example.com', password: 'long-safe-pass' })
   assert.equal(parsed.email, 'student@example.com')
   assert.equal(registerSchema.safeParse({ name: 'Student', email: 'a@b.com', password: 'short' }).success, false)
+})
+
+test('login accepts only credential fields and rejects the signup-only name', () => {
+  const parsed = loginSchema.parse({ email: 'STUDENT@example.com', password: 'existing-password' })
+  assert.deepEqual(parsed, { email: 'student@example.com', password: 'existing-password' })
+  assert.equal(loginSchema.safeParse({ email: 'student@example.com', password: 'existing-password', name: '' }).success, false)
 })
