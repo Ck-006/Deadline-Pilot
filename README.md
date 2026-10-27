@@ -4,6 +4,8 @@
 
 > **Deployment status:** prepared for Render + MongoDB Atlas. The Atlas URI is configured in the local, Git-ignored `server/.env`; live deployment and demo recording are still outstanding.
 
+**Source code:** [Ck-006/Deadline-Pilot](https://github.com/Ck-006/Deadline-Pilot)
+
 ## Problem and users
 
 Students often track coursework across course pages, calendars, and informal lists. That makes it hard to see what is late, what is coming up, and which task deserves attention first. DeadlinePilot is for college students managing several classes; it combines a persistent assignment planner with a transparent, deterministic focus recommendation.
@@ -167,7 +169,6 @@ Follow [docs/DEMO_SCRIPT.md](docs/DEMO_SCRIPT.md) for a concise 3–5 minute pro
 - Atlas connectivity is verified. Account ownership and user-data persistence still need an end-to-end check with a demo account.
 - A live deployment and demo video are not available; no public app URL or recording is claimed.
 - The actual Atlas persistence, auth, and cross-account isolation flows require a follow-up verification.
-- The GitHub repository has not yet received the local commits.
 - Completing the final submission form, checking public links privately, and uploading the demo remain student actions.
 
 See [docs/SUBMISSION_CHECKLIST.md](docs/SUBMISSION_CHECKLIST.md) for the handoff items.
