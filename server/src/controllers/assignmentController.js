@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import Assignment from '../models/Assignment.js'
-import { buildDashboard } from '../services/prioritization.js'
+import { buildDashboard, sortAssignmentsByUrgency } from '../services/prioritization.js'
 import { AppError, sendData } from '../utils.js'
 import { createAssignmentSchema, updateAssignmentSchema } from '../validators/schemas.js'
 
@@ -23,8 +23,8 @@ export async function listAssignments(req, res) {
     { title: { $regex: escapeRegex(search), $options: 'i' } },
     { course: { $regex: escapeRegex(search), $options: 'i' } },
   ]
-  const sort = req.query.sort === 'urgency' ? { dueAt: 1, priority: -1 } : { dueAt: 1 }
-  const assignments = await Assignment.find(query).sort(sort).lean()
+  let assignments = await Assignment.find(query).sort(req.query.sort === 'urgency' ? {} : { dueAt: 1 }).lean()
+  if (req.query.sort === 'urgency') assignments = sortAssignmentsByUrgency(assignments)
   return sendData(res, { assignments })
 }
 

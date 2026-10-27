@@ -127,7 +127,7 @@ Generate a secret locally with `node -e "console.log(require('node:crypto').rand
 
 1. Create or sign in to a MongoDB Atlas account and create a deployment on an available free/low-cost plan.
 2. Create a dedicated database user with a strong, unique password and the minimum read/write permissions needed for the `deadlinepilot` database.
-3. In **Network Access**, allow your current development IP. For a deployed backend, allow the hosting provider's outbound IP range when available. If the selected host uses changing outbound addresses, Atlas may require a broader `0.0.0.0/0` entry; use a strong database password and restrict the database user to this app/database.
+3. In **Network Access**, allow your current development IP. For Render, open the service dashboard's **Connect → Outbound** view and add its outbound IP ranges to Atlas. Render may use any IP in the listed ranges; Atlas accepts connections only from allowlisted sources. Use the smallest practical range and a database user scoped to this application. See [Render outbound IP ranges](https://render.com/docs/outbound-ip-addresses) and [Atlas network security guidance](https://www.mongodb.com/docs/atlas/architecture/current/network-security/).
 4. In **Connect → Drivers**, copy the Node.js connection string. Replace `<user>` and `<password>` with the database user's URL-encoded credentials, `<cluster-host>` with your cluster hostname, and the path database name with `deadlinepilot`.
 5. Paste the URI in `server/.env` as `MONGODB_URI=...`. Do not share it in chat or commit it.
 6. Add a long random value as `JWT_SECRET`, keep `CLIENT_URL=http://localhost:5173`, then run `npm run dev`.
@@ -149,12 +149,14 @@ The tests cover ordering of overdue and future tasks, completed-task exclusion, 
 1. Push this repository to your Git hosting account, then create a Render web service from the repository using the included Blueprint file.
 2. Set `MONGODB_URI` to the Atlas URI as a secret environment value. Use a unique production `JWT_SECRET` (Render can generate one from the Blueprint).
 3. Set `CLIENT_URL` to the exact HTTPS Render service origin (for example `https://deadlinepilot.onrender.com`) to match credentialed CORS. The app uses a Secure cookie in production.
-4. Configure Atlas network access for the Render service's outbound IP addresses. If the plan has dynamic outbound IPs, review the Atlas allowlist guidance and use the narrowest viable range.
-5. Deploy. Verify `/api/health` reports `connected`; register and exercise create/edit/complete/delete, filtering, and a second user isolation check.
+4. Configure Atlas network access for the Render service's outbound IP ranges, using **Connect → Outbound** in its dashboard and the narrowest practical Atlas allowlist entries. See [Render outbound IP ranges](https://render.com/docs/outbound-ip-addresses).
+5. Deploy. Verify `/api/health` reports `connected`; register and exercise create/edit/complete/delete, filtering, and a second user isolation check. Render documents Blueprint fields and generated secrets in its [Blueprint YAML reference](https://render.com/docs/blueprint-spec).
 6. Record the final app URL here after deployment. No public deployment URL has been created by this project run.
 
 Build command: `npm ci && npm --prefix server ci && npm --prefix client ci && npm run build`  
 Start command: `npm start`
+
+The Blueprint selects Render's free web-service plan to keep the initial setup low-cost. Free web services spin down after 15 minutes without traffic and may take about a minute to wake on the next request; warm the app before a live demo or select a plan that stays running if you need consistent availability. See [Render's free service limits](https://render.com/docs/free).
 
 ## Demo and submission
 

@@ -34,6 +34,22 @@ export function prioritizeAssignments(assignments, now = new Date()) {
     .sort((a, b) => b.score - a.score || (a.daysLeft - b.daysLeft) || String(a.assignment._id ?? a.assignment.id ?? '').localeCompare(String(b.assignment._id ?? b.assignment.id ?? '')))
 }
 
+export function sortAssignmentsByUrgency(assignments, now = new Date()) {
+  const ranked = prioritizeAssignments(assignments, now)
+  const ranks = new Map(ranked.map((item, index) => [String(item.assignment._id ?? item.assignment.id ?? ''), index]))
+  const time = now instanceof Date ? now.getTime() : new Date(now).getTime()
+  return [...assignments].sort((a, b) => {
+    const aRank = ranks.get(String(a._id ?? a.id ?? ''))
+    const bRank = ranks.get(String(b._id ?? b.id ?? ''))
+    if (aRank !== undefined || bRank !== undefined) return (aRank ?? Number.MAX_SAFE_INTEGER) - (bRank ?? Number.MAX_SAFE_INTEGER)
+    const aDue = new Date(a.dueAt ?? a.dueDate).getTime()
+    const bDue = new Date(b.dueAt ?? b.dueDate).getTime()
+    const aTime = Number.isFinite(aDue) ? aDue : time + Number.MAX_SAFE_INTEGER
+    const bTime = Number.isFinite(bDue) ? bDue : time + Number.MAX_SAFE_INTEGER
+    return aTime - bTime
+  })
+}
+
 export function buildDashboard(assignments, now = new Date()) {
   const pending = assignments.filter((a) => a.status !== 'completed')
   const completed = assignments.filter((a) => a.status === 'completed')
