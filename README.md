@@ -4,6 +4,10 @@
 
 **Source code:** [Ck-006/Deadline-Pilot](https://github.com/Ck-006/Deadline-Pilot)
 
+**Demo Video:** https://drive.google.com/drive/folders/1ZjP63LSAgxchqCH1JPE35oz5DSRp0DTc?usp=sharing
+
+**Live Link:** https://deadlinepilot-tcxd.onrender.com/login
+
 ## Problem and users
 
 Students often track coursework across course pages, calendars, and informal lists. That makes it hard to see what is late, what is coming up, and which task deserves attention first. DeadlinePilot is for college students managing several classes; it combines a persistent assignment planner with a transparent, deterministic focus recommendation.
